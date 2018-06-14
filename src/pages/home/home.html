@@ -1,0 +1,18 @@
+<ion-header>
+  <ion-navbar>  
+    <ion-title>
+      Devops Plan
+    </ion-title>
+
+    <ion-buttons end>
+      <ion-badge id="badge" item-end>0</ion-badge>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-searchbar [(ngModel)]="assuntoBuscado" (ionInput)="onInput(assuntoBuscado)"
+  debounce="750" placeholder="Digite o assunto..." animated="true" autocomplete="true">
+  </ion-searchbar>
+  <button ion-button block (click)="exibirToast('Você clicou')">INICIAR</button>
+</ion-content>

@@ -1,0 +1,148 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Devops_plan",
+		"_postman_id": "09f8fa43-1ec9-3850-806e-449bef2f4d55",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Questions",
+			"description": "",
+			"item": [
+				{
+					"name": "find all questions",
+					"request": {
+						"url": "{{url}}/questions",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "find question by id",
+					"request": {
+						"url": "{{url}}/questions/1",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "delete question",
+					"request": {
+						"url": "{{url}}/questions/1",
+						"method": "DELETE",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Answers",
+			"description": "",
+			"item": [
+				{
+					"name": "find all answers",
+					"request": {
+						"url": "{{url}}/answers",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "find answers by id",
+					"request": {
+						"url": "{{url}}/answers/18",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "insert answers",
+					"request": {
+						"url": "{{url}}/answers",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"description\": \"Resposta teste\",\n\t\"action\": null,\n\t\"questionId\": 1,\n\t\"nextQuestionId\": 2\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "delete answer",
+					"request": {
+						"url": "{{url}}/answers/11",
+						"method": "DELETE",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Actions",
+			"description": "",
+			"item": [
+				{
+					"name": "find all actions",
+					"request": {
+						"url": "{{url}}/actions",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "find actions by id",
+					"request": {
+						"url": "{{url}}/actions/5",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "delete action",
+					"request": {
+						"url": "{{url}}/actions/5",
+						"method": "DELETE",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
