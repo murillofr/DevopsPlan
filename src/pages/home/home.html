@@ -11,10 +11,12 @@
 </ion-header>
 
 <ion-content>
-  <ion-searchbar [(ngModel)]="assuntoBuscado" (ionInput)="getAssuntos($event)"
-  debounce="750" placeholder="Digite o assunto..." animated="true" autocomplete="true">
+    <!-- (ionInput)="getAssuntos($event)" -->
+    <!-- (ionInput)="pesquisarAssuntos(assuntoBuscado)" -->
+  <ion-searchbar #searchBar [(ngModel)]="assuntoBuscado" (ionInput)="pesquisarAssuntos(assuntoBuscado)"
+  debounce="750" placeholder="Digite o assunto..." animated="true">
   </ion-searchbar>
-  <button id="btIniciar" ion-button block (click)="exibirToast('Você clicou')">INICIAR</button>
+  <button id="btIniciar" ion-button block (click)="pushPageQuestions(assuntoBuscado)">INICIAR</button>
   <div id="divListAssuntos">
     <ion-list *ngIf="showList">
       <button ion-item detail-none *ngFor="let assunto of assuntos" (click)="setAssunto(assunto)">

@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{ assuntoDescription }}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+
+    <ion-list radio-group [(ngModel)]="questionsList">
+
+        <ion-list-header *ngFor="let questao of currentQuestion">
+          {{ questao.description }}
+        </ion-list-header>
+      
+        <ion-item *ngFor="let resposta of currentAnswer">
+          <ion-label>{{ resposta.action }}</ion-label>
+          <ion-radio value="cord"></ion-radio>
+        </ion-item>
+      
+      </ion-list>
+
+  <button id="btNext" ion-button block (click)="exibirToast('TESTE')">PRÓXIMA</button>
+</ion-content>

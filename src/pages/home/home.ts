@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import {
   NavController,
   NavParams,
@@ -6,6 +6,7 @@ import {
   ToastController
 } from 'ionic-angular';
 import { HerokuProvider } from './../../providers/heroku/heroku';
+import { QuestionsPage } from '../questions/questions';
 
 @Component({
   selector: 'page-home',
@@ -16,6 +17,7 @@ export class HomePage {
   private assuntos: Array<any>;
   showList: boolean = false;
   assuntoBuscado: string = '';
+  @ViewChild('searchBar') myInput;
 
   constructor(
     public navCtrl: NavController,
@@ -35,20 +37,48 @@ export class HomePage {
       'Paris'
     ];
   }
+
+  pesquisarAssuntos(assunto) {
+    if (assunto !== "") {
+      let loading = this.loadingCtrl.create({
+        content: 'Buscando assuntos...',
+      });
+      loading.present();
+    
+      this.herokuProvider.pesquisarAssuntos(assunto).subscribe(
+        data => {
+          this.assuntos = data;
+          console.log(data);
+        },
+        err => {
+          console.log(err);
+          loading.dismiss().then(() => { this.myInput.setFocus(); });
+          this.getAssuntos(this.assuntoBuscado);
+        },
+        () => {
+          loading.dismiss().then(() => { this.myInput.setFocus(); });
+          console.log('Assunto(s) encontrado(s)');
+        }
+      );
+    }else {
+      this.getAssuntos(this.assuntoBuscado);
+    }
+
+  }
   
-  getAssuntos(ev: any) {
+  getAssuntos(assunto) {
     // Reseta a variável
     this.initializeItems();
 
     // Seta na variável o valor digitado na searchbar
-    let val = ev.target.value;
+    this.assuntoBuscado = assunto;
 
     // Se o valor não for vazio, filtra os assuntos
-    if (val && val.trim() != '') {
+    if (this.assuntoBuscado && this.assuntoBuscado.trim() != '') {
       
       // Filtra os assuntos
       this.assuntos = this.assuntos.filter((item) => {
-        return (item.toLowerCase().indexOf(val.toLowerCase()) > -1);
+        return (item.toLowerCase().indexOf(this.assuntoBuscado.toLowerCase()) > -1);
       });
 
       // Verifica se não retornou nenhum assunto, se não, add msg padrão
@@ -65,13 +95,19 @@ export class HomePage {
   }
 
   setAssunto(assunto) {
-    this.assuntoBuscado = assunto;
-    this.controlarBadge(0, "");
+    if (assunto !== "Nenhum assunto encontrado") {
+      this.assuntoBuscado = assunto;
+      this.controlarBadge(0, "");
+    }
   }
 
   controlarBadge(num, assunto) {
     if (num > 0) {
-      document.getElementById("badge").textContent = num;
+      if (assunto !== "") {
+        document.getElementById("badge").textContent = "0";
+      }else {
+        document.getElementById("badge").textContent = num;
+      }
       document.getElementById("badge").style.visibility = "visible";
       document.getElementById("btIniciar").style.visibility = "hidden";
       this.showList = true;
@@ -82,27 +118,12 @@ export class HomePage {
       this.showList = false;
     }
   }
-  
-  pesquisarAssuntos(assuntoBuscado) {
-    let loading = this.loadingCtrl.create({
-      content: 'Buscando assuntos...',
+
+  pushPageQuestions(assuntoDescription): void {
+    this.navCtrl.push(QuestionsPage, {
+      assuntoId: 1,
+      assuntoDescription: assuntoDescription
     });
-    loading.present();
-  
-    this.herokuProvider.pesquisarAssuntos(assuntoBuscado).subscribe(
-      data => {
-        this.assuntos = data;
-        console.log(data);
-      },
-      err => {
-        console.log(err);
-      },
-      () => {
-        loading.dismiss();
-        // loading.dismiss().then(() => { this.myInput.setFocus(); });
-        console.log('Assunto(s) encontrado(s)');
-      }
-    );
   }
 
   exibirToast(msg) {

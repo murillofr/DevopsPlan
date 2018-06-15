@@ -9,12 +9,14 @@ import { StatusBar } from '@ionic-native/status-bar';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
+import { QuestionsPage } from '../pages/questions/questions';
 import { HerokuProvider } from '../providers/heroku/heroku';
 
 @NgModule({
   declarations: [
     MyApp,
-    HomePage
+    HomePage,
+    QuestionsPage
   ],
   imports: [
     BrowserModule,
@@ -25,7 +27,8 @@ import { HerokuProvider } from '../providers/heroku/heroku';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HomePage
+    HomePage,
+    QuestionsPage
   ],
   providers: [
     StatusBar,
