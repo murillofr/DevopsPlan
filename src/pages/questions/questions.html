@@ -9,16 +9,16 @@
 
     <ion-list radio-group [(ngModel)]="questionsList">
 
-        <ion-list-header *ngFor="let questao of currentQuestion">
-          {{ questao.description }}
+        <ion-list-header>
+          {{ currentQuestion[0].description }}
         </ion-list-header>
       
         <ion-item *ngFor="let resposta of currentAnswer">
-          <ion-label>{{ resposta.action }}</ion-label>
-          <ion-radio value="cord"></ion-radio>
+          <ion-label>{{ resposta.description }}</ion-label>
+          <ion-radio (click)="setarResposta(resposta.id)" value="{{ resposta.id }}" ></ion-radio>
         </ion-item>
       
       </ion-list>
 
-  <button id="btNext" ion-button block (click)="exibirToast('TESTE')">PRÓXIMA</button>
+  <button id="btNext" ion-button block (click)="pushPageQuestions()">PRÓXIMA</button>
 </ion-content>

@@ -37,4 +37,8 @@ import { HerokuProvider } from '../providers/heroku/heroku';
     HerokuProvider
   ]
 })
-export class AppModule {}
+export class AppModule {
+  public static oldAction: Array<any>;
+  public static newAction: Array<any>;
+  public static testeString: String;
+}

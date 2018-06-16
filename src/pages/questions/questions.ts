@@ -1,3 +1,4 @@
+import { AppModule } from '../../app/app.module';
 import { Component } from '@angular/core';
 import { 
   IonicPage, 
@@ -17,6 +18,7 @@ export class QuestionsPage {
   private payloadFindAllQuestion: Array<any>;
   private currentQuestion: Array<any>;
   private currentAnswer: Array<any>;
+  private respostaSelecionada: any;
 
   constructor(
     public navCtrl: NavController, 
@@ -25,15 +27,13 @@ export class QuestionsPage {
 
       this.initializeItems();
 
+      // Filtra a question com base no Id passado
       this.currentQuestion = this.payloadFindAllQuestion.filter((item) => {
         return (item.id.indexOf(this.assuntoId) > -1);
       });
 
-      this.currentAnswer = this.currentQuestion.filter((item) => {
-        console.log(item.answer[0]);
-        return (item.answer[0]);
-      });
-
+      // Seta o array das respostas correntes
+      this.currentAnswer = this.currentQuestion[0].answer;
   }
 
   initializeItems() {
@@ -145,6 +145,10 @@ export class QuestionsPage {
     console.log('ionViewDidLoad QuestionsPage');
   }
 
+  setarResposta(id) {
+    this.respostaSelecionada = id;
+  }
+
   exibirToast(msg) {
     let toast = this.toastCtrl.create({
       message: msg,
@@ -154,10 +158,25 @@ export class QuestionsPage {
     toast.present();
   }
 
-  pushPageQuestions(assuntoId): void {
-    this.navCtrl.push(QuestionsPage, {
-      assuntoId: assuntoId
+  pushPageQuestions(): void {
+    console.log(this.respostaSelecionada);
+    AppModule.oldAction = this.currentAnswer.filter((item) => {
+      return (item.id.indexOf(this.respostaSelecionada) > -1);
     });
+    AppModule.oldAction = AppModule.oldAction[0].action;
+
+    if (AppModule.newAction == undefined) {
+      AppModule.newAction = [];
+    }
+
+    for (let i = 0; AppModule.oldAction.length; i++) {
+      AppModule.newAction.push(AppModule.oldAction[i]);
+    }
+    console.log(AppModule.newAction);
+
+    // this.navCtrl.push(QuestionsPage, {
+    //   assuntoId: this.respostaSelecionada
+    // });
   }
 
 }
