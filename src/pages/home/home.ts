@@ -121,7 +121,7 @@ export class HomePage {
 
   pushPageQuestions(assuntoDescription): void {
     this.navCtrl.push(QuestionsPage, {
-      assuntoId: 1,
+      questaoId: 1,
       assuntoDescription: assuntoDescription
     });
   }

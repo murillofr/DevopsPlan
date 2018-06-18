@@ -13,12 +13,15 @@ import {
   templateUrl: 'questions.html',
 })
 export class QuestionsPage {
-  private assuntoId = this.navParams.data.assuntoId;
+  private questaoId = this.navParams.data.questaoId;
   private assuntoDescription = this.navParams.data.assuntoDescription;
   private payloadFindAllQuestion: Array<any>;
   private currentQuestion: Array<any>;
   private currentAnswer: Array<any>;
   private respostaSelecionada: any;
+  private nextQuestionId: any;
+  private acabou: boolean = false;
+  public finalAction: Array<any>;
 
   constructor(
     public navCtrl: NavController, 
@@ -29,11 +32,27 @@ export class QuestionsPage {
 
       // Filtra a question com base no Id passado
       this.currentQuestion = this.payloadFindAllQuestion.filter((item) => {
-        return (item.id.indexOf(this.assuntoId) > -1);
+        return (item.id.indexOf(this.questaoId) > -1);
       });
 
       // Seta o array das respostas correntes
       this.currentAnswer = this.currentQuestion[0].answer;
+
+      // Verifica se acabaram as perguntas
+      if (this.currentAnswer.length == 0) {
+        this.acabou = true;
+        this.finalAction = AppModule.newAction;
+        console.log("this.finalAction:");
+        console.log(this.finalAction);
+      }
+      //Console
+      console.log("");
+      console.log("AppModule.oldAction: ");
+      console.log(AppModule.oldAction);
+      console.log("");
+      console.log("AppModule.newAction: ");
+      console.log(AppModule.newAction);
+
   }
 
   initializeItems() {
@@ -145,8 +164,13 @@ export class QuestionsPage {
     console.log('ionViewDidLoad QuestionsPage');
   }
 
-  setarResposta(id) {
+  ionViewDidEnter() {
+    //TIRAR A(S) ACTION(S) QUANDO VOLTAR UMA TELA
+  }
+
+  setarResposta(id, nextQuestionId) {
     this.respostaSelecionada = id;
+    this.nextQuestionId = nextQuestionId;
   }
 
   exibirToast(msg) {
@@ -159,7 +183,6 @@ export class QuestionsPage {
   }
 
   pushPageQuestions(): void {
-    console.log(this.respostaSelecionada);
     AppModule.oldAction = this.currentAnswer.filter((item) => {
       return (item.id.indexOf(this.respostaSelecionada) > -1);
     });
@@ -169,14 +192,19 @@ export class QuestionsPage {
       AppModule.newAction = [];
     }
 
-    for (let i = 0; AppModule.oldAction.length; i++) {
+    // Add no array NEW as actions
+    for (let i = 0; i < AppModule.oldAction.length; i++) {
       AppModule.newAction.push(AppModule.oldAction[i]);
     }
-    console.log(AppModule.newAction);
 
-    // this.navCtrl.push(QuestionsPage, {
-    //   assuntoId: this.respostaSelecionada
-    // });
+    this.navCtrl.push(QuestionsPage, {
+      questaoId: this.nextQuestionId,
+      assuntoDescription: this.assuntoDescription
+    });
+  }
+
+  pushRoot() {
+    this.navCtrl.popToRoot();
   }
 
 }

@@ -7,18 +7,29 @@
 
 <ion-content padding>
 
-    <ion-list radio-group [(ngModel)]="questionsList">
+  <ion-list radio-group [(ngModel)]="questionsList">
 
-        <ion-list-header>
-          {{ currentQuestion[0].description }}
-        </ion-list-header>
-      
-        <ion-item *ngFor="let resposta of currentAnswer">
-          <ion-label>{{ resposta.description }}</ion-label>
-          <ion-radio (click)="setarResposta(resposta.id)" value="{{ resposta.id }}" ></ion-radio>
-        </ion-item>
-      
-      </ion-list>
+    <ion-list-header>
+      {{ currentQuestion[0].description }}
+    </ion-list-header>
 
-  <button id="btNext" ion-button block (click)="pushPageQuestions()">PRÓXIMA</button>
+    <ion-item *ngFor="let resposta of currentAnswer">
+      <ion-label>{{ resposta.description }}</ion-label>
+      <ion-radio (click)="setarResposta(resposta.id, resposta.nextQuestionId)" value="{{ resposta.id }}" ></ion-radio>
+    </ion-item>
+
+  </ion-list>
+
+  <button *ngIf="!acabou" id="btNext" ion-button block (click)="pushPageQuestions()">PRÓXIMA</button>
+
+  <div *ngIf="acabou">
+    <div>ACABOU</div>
+    <div>
+      SUAS AÇÕES:
+      <ion-item *ngFor="let acao of finalAction">
+        <ion-label>{{ acao.description }}</ion-label>
+      </ion-item>
+    </div>
+    <button id="btHome" ion-button block (click)="pushRoot()">HOME</button>
+  </div>
 </ion-content>
