@@ -20,10 +20,9 @@
 
   </ion-list>
 
-  <button *ngIf="!acabou" id="btNext" ion-button block (click)="pushPageQuestions()">PRÓXIMA</button>
+  <button *ngIf="respostaSelecionada" id="btNext" ion-button block (click)="pushPageQuestions()">PRÓXIMA</button>
 
   <div *ngIf="acabou">
-    <div>ACABOU</div>
     <div>
       SUAS AÇÕES:
       <ion-item *ngFor="let acao of finalAction">

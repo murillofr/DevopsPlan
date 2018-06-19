@@ -37,22 +37,12 @@ export class QuestionsPage {
 
       // Seta o array das respostas correntes
       this.currentAnswer = this.currentQuestion[0].answer;
-
+      
       // Verifica se acabaram as perguntas
       if (this.currentAnswer.length == 0) {
         this.acabou = true;
         this.finalAction = AppModule.newAction;
-        console.log("this.finalAction:");
-        console.log(this.finalAction);
       }
-      //Console
-      console.log("");
-      console.log("AppModule.oldAction: ");
-      console.log(AppModule.oldAction);
-      console.log("");
-      console.log("AppModule.newAction: ");
-      console.log(AppModule.newAction);
-
   }
 
   initializeItems() {
@@ -159,13 +149,17 @@ export class QuestionsPage {
       }
     ];
   }
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad QuestionsPage');
-  }
-
-  ionViewDidEnter() {
-    //TIRAR A(S) ACTION(S) QUANDO VOLTAR UMA TELA
+  
+  ionViewWillUnload() {
+    if (AppModule.backupAction !== undefined) {
+      //Limpa o array NEW para preenchê-lo com o array BACKUP
+      AppModule.newAction = [];
+      for (let i = 0; i < AppModule.backupAction.length; i++) {
+        AppModule.newAction.push(AppModule.backupAction[i]);
+      }
+      //Limpa o array BACKUP
+      AppModule.backupAction = [];
+    }
   }
 
   setarResposta(id, nextQuestionId) {
@@ -190,9 +184,14 @@ export class QuestionsPage {
 
     if (AppModule.newAction == undefined) {
       AppModule.newAction = [];
+      AppModule.backupAction = [];
     }
 
     // Add no array NEW as actions
+    for (let i = 0; i < AppModule.newAction.length; i++) {
+      AppModule.backupAction.push(AppModule.newAction[i]);
+    }
+
     for (let i = 0; i < AppModule.oldAction.length; i++) {
       AppModule.newAction.push(AppModule.oldAction[i]);
     }

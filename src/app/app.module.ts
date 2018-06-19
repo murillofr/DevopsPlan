@@ -40,5 +40,5 @@ import { HerokuProvider } from '../providers/heroku/heroku';
 export class AppModule {
   public static oldAction: Array<any>;
   public static newAction: Array<any>;
-  public static testeString: String;
+  public static backupAction: Array<any>;
 }

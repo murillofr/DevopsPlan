@@ -17,6 +17,7 @@ export class HomePage {
   private assuntos: Array<any>;
   showList: boolean = false;
   assuntoBuscado: string = '';
+  controleBotao: boolean = false;
   @ViewChild('searchBar') myInput;
 
   constructor(
@@ -36,6 +37,17 @@ export class HomePage {
       'Madrid',
       'Paris'
     ];
+  }
+
+  ionViewWillEnter() {
+    this.assuntoBuscado = "";
+    this.controleBotao = false;
+  }
+
+  ionViewDidEnter() {
+    setTimeout(() => {
+      this.myInput.setFocus();
+    }, 50);
   }
 
   pesquisarAssuntos(assunto) {
@@ -85,12 +97,14 @@ export class HomePage {
       if (this.assuntos.length == 0) {
         this.assuntos.push("Nenhum assunto encontrado");
         this.controlarBadge(this.assuntos.length, "Nenhum assunto encontrado");
+        this.controleBotao = false;
       }else {
         this.controlarBadge(this.assuntos.length, "");
       }
       
     } else {
       this.controlarBadge(0, "");
+      this.controleBotao = false;
     }
   }
 
@@ -98,6 +112,7 @@ export class HomePage {
     if (assunto !== "Nenhum assunto encontrado") {
       this.assuntoBuscado = assunto;
       this.controlarBadge(0, "");
+      this.controleBotao = true;
     }
   }
 
@@ -109,12 +124,10 @@ export class HomePage {
         document.getElementById("badge").textContent = num;
       }
       document.getElementById("badge").style.visibility = "visible";
-      document.getElementById("btIniciar").style.visibility = "hidden";
       this.showList = true;
     }else {
       document.getElementById("badge").textContent = "0";
       document.getElementById("badge").style.visibility = "hidden";
-      document.getElementById("btIniciar").style.visibility = "visible";
       this.showList = false;
     }
   }
