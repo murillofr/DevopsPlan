@@ -1,8 +1,0 @@
-POST /answers
-
-{
-	"description": "Resposta teste",
-	"action": null,
-	"questionId": 1,
-	"nextQuestionId": 2
-}

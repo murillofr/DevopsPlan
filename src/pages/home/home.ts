@@ -15,6 +15,9 @@ import { QuestionsPage } from '../questions/questions';
 })
 export class HomePage {
   private assuntos: Array<any>;
+  private nextQuestion: Array<any>;
+  private currentQuestionId = 1;
+
   showList: boolean = false;
   assuntoBuscado: string = '';
   controleBotao: boolean = false;
@@ -26,10 +29,10 @@ export class HomePage {
     public loadingCtrl: LoadingController,
     public toastCtrl: ToastController,
     private herokuProvider: HerokuProvider) {
-      this.initializeItems();
+      this.inicializarAssuntos();
   }
 
-  initializeItems() {
+  inicializarAssuntos() {
     this.assuntos = [
       'Amsterdam',
       'Berlin',
@@ -49,41 +52,10 @@ export class HomePage {
       this.myInput.setFocus();
     }, 50);
   }
-
-  pesquisarAssuntos(assunto) {
-    if (assunto !== "") {
-      let loading = this.loadingCtrl.create({
-        content: 'Buscando assuntos...',
-      });
-      loading.present();
-    
-      this.herokuProvider.pesquisarAssuntos(assunto).subscribe(
-        data => {
-          this.assuntos = data;
-          console.log(data);
-        },
-        err => {
-          console.log(err);
-          loading.dismiss().then(() => { this.myInput.setFocus(); });
-          this.getAssuntos(this.assuntoBuscado);
-        },
-        () => {
-          loading.dismiss().then(() => { this.myInput.setFocus(); });
-          console.log('Assunto(s) encontrado(s)');
-        }
-      );
-    }else {
-      this.getAssuntos(this.assuntoBuscado);
-    }
-
-  }
   
   getAssuntos(assunto) {
     // Reseta a variável
-    this.initializeItems();
-
-    // Seta na variável o valor digitado na searchbar
-    this.assuntoBuscado = assunto;
+    this.inicializarAssuntos();
 
     // Se o valor não for vazio, filtra os assuntos
     if (this.assuntoBuscado && this.assuntoBuscado.trim() != '') {
@@ -132,10 +104,37 @@ export class HomePage {
     }
   }
 
-  pushPageQuestions(assuntoDescription): void {
+  getQuestion() {
+    if (this.assuntoBuscado !== "") {
+      let loading = this.loadingCtrl.create({
+        content: 'Buscando question...',
+      });
+      loading.present();
+    
+      this.herokuProvider.FindQuestionById(this.currentQuestionId).subscribe(
+        data => {
+          this.nextQuestion = data;
+          console.log(data);
+        },
+        err => {
+          console.log(err);
+          loading.dismiss().then(() => { this.myInput.setFocus(); });
+          this.exibirToast("Erro ao buscar a question.\nTente novamente.");
+        },
+        () => {
+          loading.dismiss().then(() => { this.myInput.setFocus(); });
+          console.log('Question encontrada');
+          this.pushPageQuestions();
+        }
+      );
+    }
+  }
+
+  pushPageQuestions(): void {
     this.navCtrl.push(QuestionsPage, {
-      questaoId: 1,
-      assuntoDescription: assuntoDescription
+      nextQuestion: this.nextQuestion,
+      nextQuestionId: this.currentQuestionId,
+      assuntoDescription: this.assuntoBuscado
     });
   }
 

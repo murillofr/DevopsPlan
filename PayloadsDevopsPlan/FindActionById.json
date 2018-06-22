@@ -1,7 +1,0 @@
-GET /actions/{id}
-
-{
-    "id": "5",
-    "description": "action1",
-    "answerId": "11"
-}

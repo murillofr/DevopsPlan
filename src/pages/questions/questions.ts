@@ -4,150 +4,45 @@ import {
   IonicPage, 
   NavController, 
   NavParams,
-  ToastController 
+  LoadingController,
+  ToastController
 } from 'ionic-angular';
+import { HerokuProvider } from './../../providers/heroku/heroku';
 
 @IonicPage()
 @Component({
   selector: 'page-questions',
   templateUrl: 'questions.html',
+  providers: [HerokuProvider]
 })
 export class QuestionsPage {
-  private questaoId = this.navParams.data.questaoId;
+  private currentQuestion = this.navParams.data.nextQuestion;
+  private currentQuestionId = this.navParams.data.nextQuestionId;
   private assuntoDescription = this.navParams.data.assuntoDescription;
-  private payloadFindAllQuestion: Array<any>;
-  private currentQuestion: Array<any>;
+
   private currentAnswer: Array<any>;
-  private respostaSelecionada: any;
+  private respostaSelecionadaId: any;
+  private nextQuestion: Array<any>;
   private nextQuestionId: any;
+
   private acabou: boolean = false;
   public finalAction: Array<any>;
 
   constructor(
     public navCtrl: NavController, 
-    public navParams: NavParams, 
-    public toastCtrl: ToastController) {
-
-      this.initializeItems();
-
-      // Filtra a question com base no Id passado
-      this.currentQuestion = this.payloadFindAllQuestion.filter((item) => {
-        return (item.id.indexOf(this.questaoId) > -1);
-      });
+    public navParams: NavParams,
+    public loadingCtrl: LoadingController,
+    public toastCtrl: ToastController,
+    private herokuProvider: HerokuProvider) {
 
       // Seta o array das respostas correntes
-      this.currentAnswer = this.currentQuestion[0].answer;
+      this.currentAnswer = this.currentQuestion.answer;
       
       // Verifica se acabaram as perguntas
       if (this.currentAnswer.length == 0) {
         this.acabou = true;
         this.finalAction = AppModule.newAction;
       }
-  }
-
-  initializeItems() {
-    this.payloadFindAllQuestion = [
-      {
-        "id": "1",
-        "description": "question1",
-        "answer": [
-          {
-            "id": "11",
-            "description": "answer1",
-            "action": [
-              {
-                "id": "5",
-                "description": "action1",
-                "answerId": "11"
-              },
-              {
-                "id": "6",
-                "description": "action2",
-                "answerId": "11"
-              }
-            ],
-            "questionId": "1",
-            "nextQuestionId": "2"
-          },
-          {
-            "id": "12",
-            "description": "answer2",
-            "action": [
-              {
-                "id": "7",
-                "description": "action3",
-                "answerId": "12"
-              }
-            ],
-            "questionId": "1",
-            "nextQuestionId": "3"
-          }
-        ]
-      },
-      {
-        "id": "2",
-        "description": "question2",
-        "answer": [
-          {
-            "id": "13",
-            "description": "answer3",
-            "action": [
-              {
-                "id": "8",
-                "description": "action4",
-                "answerId": "13"
-              }
-            ],
-            "questionId": "2",
-            "nextQuestionId": "4"
-          },
-          {
-            "id": "14",
-            "description": "answer4",
-            "action": [],
-            "questionId": "2",
-            "nextQuestionId": "4"
-          }
-        ]
-      },
-      {
-        "id": "3",
-        "description": "question3",
-        "answer": [
-          {
-            "id": "15",
-            "description": "answer5",
-            "action": [
-              {
-                "id": "9",
-                "description": "action5",
-                "answerId": "15"
-              }
-            ],
-            "questionId": "3",
-            "nextQuestionId": "4"
-          },
-          {
-            "id": "16",
-            "description": "answer6",
-            "action": [
-              {
-                "id": "10",
-                "description": "action6",
-                "answerId": "16"
-              }
-            ],
-            "questionId": "3",
-            "nextQuestionId": "4"
-          }
-        ]
-      },
-      {
-        "id": "4",
-        "description": "question4",
-        "answer": []
-      }
-    ];
   }
   
   ionViewWillUnload() {
@@ -163,22 +58,37 @@ export class QuestionsPage {
   }
 
   setarResposta(id, nextQuestionId) {
-    this.respostaSelecionada = id;
+    this.respostaSelecionadaId = id;
     this.nextQuestionId = nextQuestionId;
   }
 
-  exibirToast(msg) {
-    let toast = this.toastCtrl.create({
-      message: msg,
-      duration: 1500,
-      position: 'bottom'
+  getQuestion() {
+    let loading = this.loadingCtrl.create({
+      content: 'Buscando question...',
     });
-    toast.present();
+    loading.present();
+  
+    this.herokuProvider.FindQuestionById(this.nextQuestionId).subscribe(
+      data => {
+        this.nextQuestion = data;
+        console.log(data);
+      },
+      err => {
+        console.log(err);
+        loading.dismiss();
+        this.exibirToast("Erro ao buscar a question.\nTente novamente.");
+      },
+      () => {
+        loading.dismiss();
+        console.log('Question encontrada');
+        this.pushPageQuestions();
+      }
+    );
   }
 
   pushPageQuestions(): void {
     AppModule.oldAction = this.currentAnswer.filter((item) => {
-      return (item.id.indexOf(this.respostaSelecionada) > -1);
+      return (item.id.indexOf(this.respostaSelecionadaId) > -1);
     });
     AppModule.oldAction = AppModule.oldAction[0].action;
 
@@ -197,13 +107,23 @@ export class QuestionsPage {
     }
 
     this.navCtrl.push(QuestionsPage, {
-      questaoId: this.nextQuestionId,
+      nextQuestion: this.nextQuestion,
+      nextQuestionId: this.nextQuestionId,
       assuntoDescription: this.assuntoDescription
     });
   }
 
   pushRoot() {
     this.navCtrl.popToRoot();
+  }
+
+  exibirToast(msg) {
+    let toast = this.toastCtrl.create({
+      message: msg,
+      duration: 1500,
+      position: 'bottom'
+    });
+    toast.present();
   }
 
 }

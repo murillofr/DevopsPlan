@@ -10,7 +10,7 @@
   <ion-list radio-group [(ngModel)]="questionsList">
 
     <ion-list-header>
-      {{ currentQuestion[0].description }}
+      {{ currentQuestion.description }}
     </ion-list-header>
 
     <ion-item *ngFor="let resposta of currentAnswer">
@@ -20,7 +20,7 @@
 
   </ion-list>
 
-  <button *ngIf="respostaSelecionada" id="btNext" ion-button block (click)="pushPageQuestions()">PRÓXIMA</button>
+  <button *ngIf="respostaSelecionadaId" id="btNext" ion-button block (click)="getQuestion()">PRÓXIMA</button>
 
   <div *ngIf="acabou">
     <div>
