@@ -21,6 +21,9 @@ export class HomePage {
   showList: boolean = false;
   assuntoBuscado: string = '';
   controleBotao: boolean = false;
+
+  badgeColor = "azul";
+
   @ViewChild('searchBar') myInput;
 
   constructor(
@@ -92,8 +95,10 @@ export class HomePage {
     if (num > 0) {
       if (assunto !== "") {
         document.getElementById("badge").textContent = "0";
+        this.badgeColor = "danger";
       }else {
         document.getElementById("badge").textContent = num;
+        this.badgeColor = "azul";
       }
       document.getElementById("badge").style.visibility = "visible";
       this.showList = true;

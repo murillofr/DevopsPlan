@@ -6,14 +6,40 @@
     visibility: hidden;
 }
 
-#divListAssuntos {
-    z-index: 999;
-}
+
 
 #btIniciar {
-    position: absolute;
+    margin: 7px 8px 0 8px;
 }
 
 .toast-message {
     white-space: pre;
+}
+
+.fixed-content{
+    background-color: map-get($colors, azul-escuro);
+}
+
+.searchbar-input-container{            
+    .searchbar-input{
+        border-radius: 20px;
+        
+    }
+}
+
+
+
+
+.list-md>.item-block:first-child,
+.list-ios>.item-block:first-child {
+    border-top: 1px solid #fff;
+    margin-top: 8px;
+}
+.list-ios>.item-block:last-child,
+.list-md>.item-block:last-child {
+    border-bottom: 1px solid #fff;
+}
+.list-ios>.item-block,
+.list-md>.item-block {
+    border-bottom: 1px solid #fff;
 }
