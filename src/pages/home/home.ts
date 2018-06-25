@@ -32,16 +32,43 @@ export class HomePage {
     public loadingCtrl: LoadingController,
     public toastCtrl: ToastController,
     private herokuProvider: HerokuProvider) {
-      this.inicializarAssuntos();
+      
   }
 
   inicializarAssuntos() {
     this.assuntos = [
-      'Amsterdam',
-      'Berlin',
-      'Bueno Aires',
-      'Madrid',
-      'Paris'
+      'Alemanha',
+      'Arábia Saudita',
+      'Argentina',
+      'Austrália',
+      'Bélgica',
+      'Brasil',
+      'Colômbia',
+      'Coreia do Sul',
+      'Costa Rica',
+      'Croácia',
+      'Dinamarca',
+      'Egito',
+      'Espanha',
+      'França',
+      'Inglaterra',
+      'Irã',
+      'Islândia',
+      'Japão',
+      'Marrocos',
+      'México',
+      'Nigéria',
+      'Panamá',
+      'Peru',
+      'Polônia',
+      'Portugal',
+      'Rússia',
+      'Senegal',
+      'Sérvia',
+      'Suécia',
+      'Suíça',
+      'Tunísia',
+      'Uruguai'
     ];
   }
 
@@ -57,30 +84,44 @@ export class HomePage {
   }
   
   getAssuntos(assunto) {
-    // Reseta a variável
-    this.inicializarAssuntos();
 
     // Se o valor não for vazio, filtra os assuntos
     if (this.assuntoBuscado && this.assuntoBuscado.trim() != '') {
-      
-      // Filtra os assuntos
-      this.assuntos = this.assuntos.filter((item) => {
-        return (item.toLowerCase().indexOf(this.assuntoBuscado.toLowerCase()) > -1);
-      });
 
-      // Verifica se não retornou nenhum assunto, se não, add msg padrão
-      if (this.assuntos.length == 0) {
-        this.assuntos.push("Nenhum assunto encontrado");
-        this.controlarBadge(this.assuntos.length, "Nenhum assunto encontrado");
-        this.controleBotao = false;
-      }else {
-        this.controlarBadge(this.assuntos.length, "");
-      }
-      
+      let loading = this.loadingCtrl.create({
+        content: 'Buscando assuntos...',
+      });
+      loading.present();
+  
+      setTimeout(() => {
+        
+        loading.dismiss().then(() => {
+
+          this.inicializarAssuntos();
+
+          // Filtra os assuntos
+          this.assuntos = this.assuntos.filter((item) => {
+            return (item.toLowerCase().indexOf(this.assuntoBuscado.toLowerCase()) > -1);
+          });
+    
+          // Verifica se não retornou nenhum assunto, se não, add msg padrão
+          if (this.assuntos.length == 0) {
+            this.assuntos.push("Nenhum assunto encontrado");
+            this.controlarBadge(this.assuntos.length, "Nenhum assunto encontrado");
+            this.controleBotao = false;
+          }else {
+            this.controlarBadge(this.assuntos.length, "");
+          }
+
+        });
+
+      }, Math.floor(Math.random() * 1501));
+
     } else {
       this.controlarBadge(0, "");
       this.controleBotao = false;
     }
+
   }
 
   setAssunto(assunto) {
@@ -98,7 +139,7 @@ export class HomePage {
         this.badgeColor = "danger";
       }else {
         document.getElementById("badge").textContent = num;
-        this.badgeColor = "azul";
+        this.badgeColor = "azul-claro";
       }
       document.getElementById("badge").style.visibility = "visible";
       this.showList = true;
@@ -107,6 +148,7 @@ export class HomePage {
       document.getElementById("badge").style.visibility = "hidden";
       this.showList = false;
     }
+    this.controleBotao = false;
   }
 
   getQuestion() {

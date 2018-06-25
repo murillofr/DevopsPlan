@@ -16,6 +16,7 @@ import { HerokuProvider } from './../../providers/heroku/heroku';
   providers: [HerokuProvider]
 })
 export class QuestionsPage {
+
   private currentQuestion = this.navParams.data.nextQuestion;
   private currentQuestionId = this.navParams.data.nextQuestionId;
   private assuntoDescription = this.navParams.data.assuntoDescription;
@@ -60,6 +61,12 @@ export class QuestionsPage {
   setarResposta(id, nextQuestionId) {
     this.respostaSelecionadaId = id;
     this.nextQuestionId = nextQuestionId;
+
+    for (let resposta of this.currentAnswer) {
+      document.getElementById(resposta.id).style.backgroundColor = "#FFF";
+    }
+    document.getElementById(id).style.backgroundColor = "#C5CAFF";
+
   }
 
   getQuestion() {

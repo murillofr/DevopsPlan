@@ -41,7 +41,8 @@ $colors: (
   dark:        #222,
   azul-escuro: #16193B,
   azul:        #4E7AC7,
-  azul-claro:  #ADD5F7
+  azul-claro:  #C5CAFF,
+  white:       #fff
 );
 
 
@@ -54,7 +55,15 @@ $searchbar-ios-border-color: #16193B;
 $searchbar-ios-input-placeholder-color: #16193B;
 $searchbar-ios-input-text-color: #16193B;
 $searchbar-ios-input-clear-icon-color: #16193B;
-$list-ios-border-color: #16193B;
+
+$list-ios-border-color: #fff;
+
+$radio-ios-color-on: #16193B;
+$radio-ios-color-off: #16193B;
+
+$button-ios-font-size: 1.4rem;
+$button-ios-background-color: #212658;
+
 
 // App Material Design Variables
 // --------------------------------------------------
@@ -66,8 +75,15 @@ $searchbar-md-border-color: #16193B;
 $searchbar-md-input-placeholder-color: #16193B;
 $searchbar-md-input-text-color: #16193B;
 $searchbar-md-input-clear-icon-color: #16193B;
-$list-md-border-color: #16193B;
+$searchbar-md-input-height: 50px;
+$searchbar-md-input-search-icon-size: 25px;
 
+$list-md-border-color: #fff;
+
+$radio-md-color-on: #16193B;
+$radio-md-color-off: #16193B;
+
+$button-md-outline-background-color-activated: #212658;
 
 
 // App Windows Variables

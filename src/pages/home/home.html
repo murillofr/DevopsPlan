@@ -12,18 +12,21 @@
 
 <ion-content>
 
-  <ion-searchbar #searchBar [(ngModel)]="assuntoBuscado" (ionInput)="getAssuntos()"
+  <ion-searchbar id="searchBar" #searchBar [(ngModel)]="assuntoBuscado" (ionInput)="getAssuntos()"
   debounce="250" placeholder="Digite o assunto..." animated="true">
   </ion-searchbar>
   
   <div id="divListAssuntos">
     <ion-list *ngIf="showList">
-      <button color="azul-escuro" ion-item detail-none *ngFor="let assunto of assuntos" (click)="setAssunto(assunto)">
+      <button color="white" ion-item detail-none *ngFor="let assunto of assuntos" (click)="setAssunto(assunto)">
         {{ assunto }}
       </button>
     </ion-list>
   </div>
 
-  <button *ngIf="controleBotao" id="btIniciar" ion-button block outline (click)="getQuestion()">INICIAR</button>
+  <div id="divBtIniciar">
+    <button *ngIf="controleBotao" id="btIniciar" ion-button outline (click)="getQuestion()">INICIAR</button>
+  </div>
 
+  
 </ion-content>

@@ -5,30 +5,36 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content>
+
+  <ion-item id="questionDescription">
+    {{acabou ? 'Fim do questionário' : currentQuestion.description}}
+  </ion-item>
 
   <ion-list radio-group [(ngModel)]="questionsList">
-
-    <ion-list-header>
-      {{ currentQuestion.description }}
-    </ion-list-header>
-
-    <ion-item *ngFor="let resposta of currentAnswer">
-      <ion-label>{{ resposta.description }}</ion-label>
+    <ion-item no-lines id="{{ resposta.id }}" *ngFor="let resposta of currentAnswer">
+      <ion-label color="azul-escuro">{{ resposta.description }}</ion-label>
       <ion-radio (click)="setarResposta(resposta.id, resposta.nextQuestionId)" value="{{ resposta.id }}" ></ion-radio>
     </ion-item>
-
   </ion-list>
 
-  <button *ngIf="respostaSelecionadaId" id="btNext" ion-button block (click)="getQuestion()">PRÓXIMA</button>
+  <div class="divBtNextHome">
+    <button *ngIf="respostaSelecionadaId" class="btNextHome" ion-button outline (click)="getQuestion()">PRÓXIMA</button>
+  </div>
 
   <div *ngIf="acabou">
     <div>
-      SUAS AÇÕES:
-      <ion-item *ngFor="let acao of finalAction">
-        <ion-label>{{ acao.description }}</ion-label>
-      </ion-item>
+      <ion-list>
+        <ion-item id="headerActions" no-lines color="azul-claro">
+          Suas ações
+        </ion-item>
+        <ion-item *ngFor="let acao of finalAction">
+          <ion-label>{{ acao.description }}</ion-label>
+        </ion-item>
+      </ion-list>
     </div>
-    <button id="btHome" ion-button block (click)="pushRoot()">HOME</button>
+    <div class="divBtNextHome">
+      <button class="btNextHome" ion-button outline (click)="pushRoot()">HOME</button>
+    </div>
   </div>
 </ion-content>
